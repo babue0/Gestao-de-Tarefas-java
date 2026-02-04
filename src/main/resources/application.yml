@@ -1,0 +1,28 @@
+spring:
+  application:
+    name=Gestao de tarefas
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: curso-database
+  generate-ddl: true
+  hibernate:
+    ddl-auto: validate
+  open-in-view: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/curso-database?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: curso-dev
+    password: curso-dev
+    drive-class-name: com.mysql.cj.jbdc.Driver
+
+  flyway:
+    enable: true
+    baseline-on-migrate: true
+
+
+
+
+
+

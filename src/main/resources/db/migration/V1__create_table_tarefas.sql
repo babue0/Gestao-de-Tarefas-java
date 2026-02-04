@@ -1,0 +1,7 @@
+CREATE TABLE tarefa (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    local VARCHAR(255) NOT NULL,
+    date_hour DATETIME NOT NULL
+);
