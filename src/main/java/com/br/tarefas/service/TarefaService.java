@@ -1,6 +1,7 @@
 package com.br.tarefas.service;
 
 import com.br.tarefas.entity.Tarefa;
+import com.br.tarefas.exception.TarefaNotFound;
 import com.br.tarefas.repository.TarefaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class TarefaService {
   public Tarefa recuperarTarefa(Long id){
     Optional<Tarefa> tarefa0p = tarefaRepository.findById(id);
 
-    return tarefa0p.orElseThrow(() -> new EntityNotFoundException("Tarefa com o id " + id+ " nao encontrado"));
+    return tarefa0p.orElseThrow(() -> new TarefaNotFound("Tarefa com o id " + id+ " nao encontrado"));
   }
 
   public Tarefa addTarefa(Tarefa tarefa){
@@ -36,12 +37,12 @@ public class TarefaService {
       tarefa.setId(id);
       return tarefaRepository.save(tarefa);
     }
-    throw new EntityNotFoundException("Tarefa com id " + id+  " nao encontrada");
+    throw new TarefaNotFound("Tarefa com id " + id+  " nao encontrada");
   }
 
   public void deleteTarefa(Long id){
     if(!tarefaRepository.existsById(id)){
-      throw new EntityNotFoundException("Tarefa com id " + id + " nao encontrada");
+      throw new TarefaNotFound("Tarefa com id " + id + " nao encontrada");
     }
     tarefaRepository.deleteById(id);
 
