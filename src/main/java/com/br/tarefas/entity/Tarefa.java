@@ -1,4 +1,4 @@
-package com.br.tarefas;
+package com.br.tarefas.entity;
 
 
 import jakarta.persistence.*;
