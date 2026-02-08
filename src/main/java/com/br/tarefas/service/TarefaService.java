@@ -1,11 +1,12 @@
 package com.br.tarefas.service;
 
+import com.br.tarefas.dto.TarefaDTO;
 import com.br.tarefas.entity.Tarefa;
 import com.br.tarefas.exception.TarefaNotFound;
 import com.br.tarefas.repository.TarefaRepository;
-import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,25 +18,30 @@ public class TarefaService {
   @Autowired
   private TarefaRepository tarefaRepository;
 
-  public Tarefa recuperarTarefa(Long id){
+  @Autowired
+  private ModelMapper modelMapper;
+
+  public TarefaDTO recuperarTarefa(Long id){
     Optional<Tarefa> tarefa0p = tarefaRepository.findById(id);
-
-    return tarefa0p.orElseThrow(() -> new TarefaNotFound("Tarefa com o id " + id+ " nao encontrado"));
+    TarefaDTO tarefaDTO = modelMapper.map(tarefa0p.orElseThrow(() -> new TarefaNotFound("Tarefa com o id " + id+ " nao encontrado")), TarefaDTO.class);
+    return tarefaDTO;
   }
 
-  public Tarefa addTarefa(Tarefa tarefa){
-    return tarefaRepository.save(tarefa);
+  public TarefaDTO addTarefa(TarefaDTO tarefa){
+    Tarefa tarefaEntity = modelMapper.map(tarefa, Tarefa.class);
+    return modelMapper.map(tarefaRepository.save(tarefaEntity), TarefaDTO.class);
   }
 
-  public List<Tarefa> recuperarTarefa(){
-    return tarefaRepository.findAll();
+  public List<TarefaDTO> recuperarTarefa(){
+    return modelMapper.map(tarefaRepository.findAll(), new TypeToken<List<TarefaDTO>>() {}.getType());
   }
 
-  public Tarefa atualizarTarefa(Long id, Tarefa tarefa){
+  public TarefaDTO atualizarTarefa(Long id, TarefaDTO tarefa){
+    Tarefa tarefaEntity = modelMapper.map(tarefa, Tarefa.class);
     Optional<Tarefa> tarefa0 = tarefaRepository.findById(id);
     if (tarefa0.isPresent()) {
-      tarefa.setId(id);
-      return tarefaRepository.save(tarefa);
+      tarefaEntity.setId(id);
+      return modelMapper.map(tarefaRepository.save(tarefaEntity), TarefaDTO.class);
     }
     throw new TarefaNotFound("Tarefa com id " + id+  " nao encontrada");
   }

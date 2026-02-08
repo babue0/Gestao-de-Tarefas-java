@@ -4,6 +4,7 @@ import com.br.tarefas.dto.ErroResponse;
 import com.br.tarefas.exception.ApiExceptionContrato;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,6 +21,14 @@ public class GlobalExceptionHandler {
 
     return ResponseEntity.status(status).body(erro);
   }
+
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErroResponse> handlerValidationException(MethodArgumentNotValidException validException){
+    validException.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+  }
+
+
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErroResponse> handlerGenericException(Exception ex){

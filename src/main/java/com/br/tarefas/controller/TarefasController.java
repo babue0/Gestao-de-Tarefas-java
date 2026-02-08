@@ -1,9 +1,8 @@
 package com.br.tarefas.controller;
 
-import com.br.tarefas.entity.Tarefa;
-import com.br.tarefas.repository.TarefaRepository;
+import com.br.tarefas.dto.TarefaDTO;
 import com.br.tarefas.service.TarefaService;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,22 +19,22 @@ public class TarefasController {
   private TarefaService tarefaService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<Tarefa> recuperarTarefas(@PathVariable Long id) {
+  public ResponseEntity<TarefaDTO> recuperarTarefas(@PathVariable Long id) {
       return ResponseEntity.ok(tarefaService.recuperarTarefa(id));
   }
 
   @PostMapping
-  public ResponseEntity<Tarefa> addTarefa(@RequestBody Tarefa tarefa){
+  public ResponseEntity<TarefaDTO> addTarefa(@Valid @RequestBody TarefaDTO tarefa){
     return ResponseEntity.status(HttpStatus.CREATED).body(tarefaService.addTarefa(tarefa));
   }
 
   @GetMapping
-  public ResponseEntity<List<Tarefa>> recuperaTarefas() {
+  public ResponseEntity<List<TarefaDTO>> recuperaTarefas() {
     return ResponseEntity.ok(tarefaService.recuperarTarefa());
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Tarefa> atualizarTarefa(@PathVariable Long id, @RequestBody Tarefa tarefa){
+  public ResponseEntity<TarefaDTO> atualizarTarefa(@PathVariable Long id, @Valid @RequestBody TarefaDTO tarefa){
     return ResponseEntity.ok(tarefaService.atualizarTarefa(id, tarefa));
   }
 
